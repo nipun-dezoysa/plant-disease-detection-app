@@ -5,13 +5,15 @@ import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { useIsFocused } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 export default function Scan() {
+  const isFocused = useIsFocused();
   let cameraRef = useRef(null);
   const [hasCameraPermission, setCameraPermission] = useState();
   const [hasMediaPermission, setMediaPermission] = useState();
   const [photo, setPhoto] = useState(null);
-  const [flash,setFlash] = useState(Camera.Constants.FlashMode.off);
+  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   useEffect(() => {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -56,25 +58,31 @@ export default function Scan() {
     <View className="flex flex-col gap-10">
       {photo ? (
         <Image source={{ uri: photo }} className="w-full h-[500px]" />
-      ) : (
+      ) : (isFocused&&
         <Camera
-          className="h-[500px]"
+          className="h-[500px] w-full"
           ref={cameraRef}
           flashMode={flash}
-        ></Camera>
+        />
       )}
       <View className="flex flex-row items-center justify-evenly relative">
         <TouchableOpacity
           onPress={pickImage}
           className="w-12 h-12 bg-gray-300 rounded-full bor flex justify-center items-center text-gray-600"
         >
-          <MaterialIcons name="photo" size={30} color="black" />
+          <Text className="text-white">
+            <MaterialIcons name="photo" size={30} />
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={takePic}
           className="w-20 h-20 bg-gray-300 rounded-full bor flex justify-center items-center text-gray-600"
         >
-          <MaterialIcons name="camera" size={50} color="black" />
+          <MaterialIcons
+            name={photo ? "check" : "camera"}
+            size={50}
+            color="white"
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
@@ -86,16 +94,18 @@ export default function Scan() {
           }
           className="w-12 h-12 bg-gray-300 rounded-full bor flex justify-center items-center text-gray-600"
         >
-          <MaterialIcons name="flash-on" size={30} color="black" />
+          <MaterialIcons name="flash-on" size={30} color="white" />
         </TouchableOpacity>
-        {photo&&<View className="absolute top-[-30px] w-full items-center">
-          <TouchableOpacity
-            onPress={() => setPhoto(null)}
-            className="w-8 h-8 bg-gray-300 rounded-full bor flex justify-center items-center text-gray-600 "
-          >
-            <MaterialIcons name="close" size={30} color="black" />
-          </TouchableOpacity>
-        </View>}
+        {photo && (
+          <View className="absolute top-[-30px] w-full items-center">
+            <TouchableOpacity
+              onPress={() => setPhoto(null)}
+              className="w-8 h-8 bg-gray-300 rounded-full bor flex justify-center items-center text-gray-600 "
+            >
+              <MaterialIcons name="close" size={30} color="white" />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
