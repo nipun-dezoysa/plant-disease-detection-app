@@ -6,7 +6,7 @@ import * as MediaLibrary from "expo-media-library";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useIsFocused } from "@react-navigation/native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import axios from "axios";
 export default function Scan() {
   const isFocused = useIsFocused();
   let cameraRef = useRef(null);
@@ -30,13 +30,38 @@ export default function Scan() {
   }
 
   const takePic = async () => {
-    if (cameraRef) {
-      try {
-        const data = await cameraRef.current.takePictureAsync();
-        setPhoto(data.uri);
-      } catch (e) {
-        console.log(e);
+    if (!photo) {
+      if (cameraRef) {
+        try {
+          const data = await cameraRef.current.takePictureAsync();
+          setPhoto(data.uri);
+        } catch (e) {
+          console.log(e);
+        }
       }
+    } else {
+      var data = new FormData();
+      data.append("image", {
+        uri: photo,
+        name: "userProfile.jpg",
+        type: "image/jpg",
+      });
+      axios
+        .post("http://192.168.174.45:4000/test", data, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+          },
+          transformRequest: () => {
+            return data;
+          },
+        })
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
 
@@ -58,12 +83,14 @@ export default function Scan() {
     <View className="flex flex-col gap-10">
       {photo ? (
         <Image source={{ uri: photo }} className="w-full h-[500px]" />
-      ) : (isFocused&&
-        <Camera
-          className="h-[500px] w-full"
-          ref={cameraRef}
-          flashMode={flash}
-        />
+      ) : (
+        isFocused && (
+          <Camera
+            className="h-[500px] w-full"
+            ref={cameraRef}
+            flashMode={flash}
+          />
+        )
       )}
       <View className="flex flex-row items-center justify-evenly relative">
         <TouchableOpacity

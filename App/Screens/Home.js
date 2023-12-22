@@ -1,9 +1,24 @@
 import React from "react";
-import { View, Text } from "react-native";
+import axios from "axios";
+import { View, Text, TouchableOpacity } from "react-native";
 export default function Home() {
+  function send(){
+    axios
+      .get("http://192.168.174.45:4000/test", {
+        
+      })
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      }); 
+  }
   return (
     <View>
-      <Text>Home</Text>
+      <TouchableOpacity onPress={send}>
+        <Text> HEY</Text>
+      </TouchableOpacity>
     </View>
   );
 }
