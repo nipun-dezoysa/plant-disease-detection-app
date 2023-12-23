@@ -7,6 +7,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
+
 export default function Scan() {
   const isFocused = useIsFocused();
   let cameraRef = useRef(null);
@@ -14,6 +15,7 @@ export default function Scan() {
   const [hasMediaPermission, setMediaPermission] = useState();
   const [photo, setPhoto] = useState(null);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
+  const [flashColor, setFlashColor] = useState("white");
   useEffect(() => {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -112,16 +114,17 @@ export default function Scan() {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() =>
+          onPress={() => {
             setFlash(
               flash === Camera.Constants.FlashMode.off
                 ? Camera.Constants.FlashMode.torch
                 : Camera.Constants.FlashMode.off
-            )
-          }
+            );
+            setFlashColor(flashColor === "white" ? "yellow" : "white");
+          }}
           className="w-12 h-12 bg-gray-300 rounded-full bor flex justify-center items-center text-gray-600"
         >
-          <MaterialIcons name="flash-on" size={30} color="white" />
+          <MaterialIcons name="flash-on" size={30} color={flashColor} />
         </TouchableOpacity>
         {photo && (
           <View className="absolute top-[-30px] w-full items-center">
