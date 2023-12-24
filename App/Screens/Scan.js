@@ -49,7 +49,7 @@ export default function Scan() {
         type: "image/jpg",
       });
       axios
-        .post("http://192.168.174.45:4000/test", data, {
+        .post("http://192.168.174.45:4000/users", data, {
           headers: {
             Accept: "application/json",
             "Content-Type": "multipart/form-data",
@@ -82,13 +82,16 @@ export default function Scan() {
   };
 
   return (
-    <View className="flex flex-col gap-10">
+    <View className="flex flex-col gap-10 ">
       {photo ? (
-        <Image source={{ uri: photo }} className="w-full h-[500px]" />
+        <Image
+          source={{ uri: photo }}
+          className="w-full h-[500px] object-fill"
+        />
       ) : (
         isFocused && (
           <Camera
-            className="h-[500px] w-full"
+            className="h-[500px] w-full object-cover"
             ref={cameraRef}
             flashMode={flash}
           />
