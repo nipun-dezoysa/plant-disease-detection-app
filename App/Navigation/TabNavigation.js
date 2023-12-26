@@ -32,7 +32,7 @@ export default function TabNavigation() {
               <View
                 className={
                   focused
-                    ? "p-3 rounded-full bg-[#1dc44a] bottom-3"
+                    ? "p-3 rounded-full bg-[#1dc44a] bottom-2"
                     : "p-3 rounded-full bg-gray-400 bottom-2"
                 }
               >

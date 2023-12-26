@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  useWindowDimensions,
+} from "react-native";
 import { useEffect, useState, useRef } from "react";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
@@ -9,6 +15,7 @@ import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 
 export default function Scan() {
+  const {width,height} = useWindowDimensions();
   const isFocused = useIsFocused();
   let cameraRef = useRef(null);
   const [hasCameraPermission, setCameraPermission] = useState();
@@ -86,12 +93,13 @@ export default function Scan() {
       {photo ? (
         <Image
           source={{ uri: photo }}
-          className="w-full h-[500px] object-fill"
+          style={{ width, height: (width / 3) * 4 }}
+          resizeMethod="scale"
         />
       ) : (
         isFocused && (
           <Camera
-            className="h-[500px] w-full object-cover"
+            style={{ width, height: (width / 3) * 4 }}
             ref={cameraRef}
             flashMode={flash}
           />
