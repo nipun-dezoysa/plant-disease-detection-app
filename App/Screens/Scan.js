@@ -14,8 +14,8 @@ import * as ImagePicker from "expo-image-picker";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 
-export default function Scan() {
-  const {width,height} = useWindowDimensions();
+export default function Scan({ navigation }) {
+  const { width, height } = useWindowDimensions();
   const isFocused = useIsFocused();
   let cameraRef = useRef(null);
   const [hasCameraPermission, setCameraPermission] = useState();
@@ -50,13 +50,13 @@ export default function Scan() {
       }
     } else {
       var data = new FormData();
-      data.append("image", {
+      data.append("file", {
         uri: photo,
         name: "userProfile.jpg",
         type: "image/jpg",
       });
       axios
-        .post("http://192.168.174.45:4000/users", data, {
+        .post("http://192.168.11.45:4000/predict", data, {
           headers: {
             Accept: "application/json",
             "Content-Type": "multipart/form-data",
@@ -67,6 +67,7 @@ export default function Scan() {
         })
         .then(function (response) {
           console.log(response.data);
+          navigation.navigate("Details");
         })
         .catch(function (error) {
           console.log(error);

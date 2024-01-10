@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../Screens/Home";
 import Scan from "../Screens/Scan";
 import Profile from "../Screens/Profile";
+import ScanNavigation from "./ScanNavigation";
 import { AntDesign } from "@expo/vector-icons";
 import { View } from "react-native";
 const Tab = createBottomTabNavigator();
@@ -25,9 +26,9 @@ export default function TabNavigation() {
       />
       <Tab.Screen
         name="Scan"
-        component={Scan}
+        component={ScanNavigation}
         options={{
-          tabBarIcon: ({ color, size,focused }) => {
+          tabBarIcon: ({ color, size, focused }) => {
             return (
               <View
                 className={
@@ -40,6 +41,7 @@ export default function TabNavigation() {
               </View>
             );
           },
+          headerShown: false,
         }}
       />
       <Tab.Screen
