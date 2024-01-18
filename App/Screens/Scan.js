@@ -56,7 +56,7 @@ export default function Scan({ navigation }) {
         type: "image/jpg",
       });
       axios
-        .post("http://192.168.11.45:4000/predict", data, {
+        .post("http://192.168.247.45:4000/predict", data, {
           headers: {
             Accept: "application/json",
             "Content-Type": "multipart/form-data",
@@ -67,7 +67,7 @@ export default function Scan({ navigation }) {
         })
         .then(function (response) {
           console.log(response.data);
-          navigation.navigate("Details");
+          navigation.navigate("Details",{photo});
         })
         .catch(function (error) {
           console.log(error);

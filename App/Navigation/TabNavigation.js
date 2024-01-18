@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "../Screens/Home";
-import Scan from "../Screens/Scan";
+import Home from "../Screens/Home"; 
 import Profile from "../Screens/Profile";
 import ScanNavigation from "./ScanNavigation";
 import { AntDesign } from "@expo/vector-icons";
@@ -25,7 +24,7 @@ export default function TabNavigation() {
         }}
       />
       <Tab.Screen
-        name="Scan"
+        name="Scans"
         component={ScanNavigation}
         options={{
           tabBarIcon: ({ color, size, focused }) => {
