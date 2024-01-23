@@ -67,7 +67,7 @@ export default function Scan({ navigation }) {
         })
         .then(function (response) {
           console.log(response.data);
-          navigation.navigate("Details",{photo});
+          navigation.navigate("Details",{photo,res:response.data.result});
         })
         .catch(function (error) {
           console.log(error);
