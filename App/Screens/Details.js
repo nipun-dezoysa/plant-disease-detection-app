@@ -13,30 +13,7 @@ import {
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import axios from "axios";
-const dataset = {
-  Tomato___Septoria_leaf_spot: {
-    leaf: "Tomato",
-    disease: "Bacterial spot",
-    des: "In rainy and wet weather conditions, the disease can cause early defoliation and fruit spotting, which results in reduced yield and non-marketable fruit. On leaves, the initial symptom appears as small, round, water-soaked spots that gradually turn dark-brown or black and are surrounded by yellow halo.",
-    sol: [
-      {
-        name: "Copper Hydroxide",
-        about:
-          "Products containing copper hydroxide are commonly used to control bacterial spot. Follow the manufacturer's instructions regarding application rates and timing.",
-      },
-      {
-        name: "Copper Sulfate",
-        about:
-          "Copper sulfate is another common copper-based product. It can be applied as a spray, but excessive use can lead to phytotoxicity, so careful application is essential.",
-      },
-      {
-        name: "Copper Oxychloride",
-        about:
-          "This is another copper-based compound effective against bacterial spot. It's important to use these products according to recommended guidelines, as excessive use can lead to copper buildup in the soil.",
-      },
-    ],
-  },
-};
+import { dataset } from "../../assets/Data";
 
 const Details = ({ route }) => {
   const { width, height } = useWindowDimensions();
@@ -78,15 +55,19 @@ const Details = ({ route }) => {
         </View>
 
         <View className="flex gap-2 flex-col mb-5">
-          <Text className="text-lg">
-            <Text className="font-medium">Leaf:</Text> {dataset[res].leaf}
+          <Text className="text-lg text-gray-700">
+            <Text className="font-medium text-gray-700">Leaf:</Text>{" "}
+            {dataset[res].leaf}
           </Text>
-          <Text className="text-lg">
-            <Text className="font-medium">Disease:</Text> {dataset[res].disease}
+          <Text className="text-lg text-gray-700">
+            <Text className="font-medium text-gray-700">Disease:</Text>{" "}
+            {dataset[res].disease}
           </Text>
           <View>
-            <Text className="text-lg font-medium">Description :</Text>
-            <Text className="">{dataset[res].des}</Text>
+            <Text className="text-lg font-medium text-gray-700">
+              Description :
+            </Text>
+            <Text className="text-gray-700">{dataset[res].des}</Text>
             <TouchableOpacity>
               <Text className="bg-green-200 p-2 w-24 flex items-center rounded-lg">
                 Read more
@@ -94,11 +75,13 @@ const Details = ({ route }) => {
             </TouchableOpacity>
           </View>
           <View>
-            <Text className="text-lg font-medium">Solutions:</Text>
+            <Text className="text-lg font-medium text-gray-700">
+              Solutions:
+            </Text>
             {dataset[res].sol.map((item, index) => (
               <Text key={index}>
-                <Text className="font-medium">{item.name}:</Text>
-                <Text>{" " + item.about}</Text>
+                <Text className="font-medium text-gray-700">*{item.name}:</Text>
+                <Text className="text-gray-500">{" " + item.about}</Text>
               </Text>
             ))}
           </View>
@@ -127,6 +110,43 @@ const Details = ({ route }) => {
             />
           ))}
         </MapView>
+        <View className=" border-t my-5 border-gray-300">
+          <Text className="text-lg font-medium text-gray-500">
+            General guidelines:
+          </Text>
+
+          <Text>
+            <Text className="font-medium text-gray-500">
+              1) Read and Follow Instructions:
+            </Text>
+            <Text className="text-gray-400">
+              {" "}
+              Carefully read and follow the instructions provided by the product
+              manufacturer. Adhere to recommended application rates, timing, and
+              safety precautions.
+            </Text>
+          </Text>
+          <Text>
+            <Text className="font-medium text-gray-500">
+              2) Rotate Fungicides:
+            </Text>
+            <Text className="text-gray-400">
+              {" "}
+              Rotate between different fungicides with different modes of action
+              to help prevent the development of resistance.
+            </Text>
+          </Text>
+          <Text>
+            <Text className="font-medium text-gray-500">
+              3) Integrated Pest Management (IPM):
+            </Text>
+            <Text className="text-gray-400">
+              {" "}
+              Utilize an integrated approach that includes cultural practices,
+              resistant varieties, and biological control methods.
+            </Text>
+          </Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

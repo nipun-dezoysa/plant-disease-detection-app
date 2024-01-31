@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   useWindowDimensions,
+  ActivityIndicator,
 } from "react-native";
 import { useEffect, useState, useRef } from "react";
 import { Camera } from "expo-camera";
@@ -23,6 +24,7 @@ export default function Scan({ navigation }) {
   const [photo, setPhoto] = useState(null);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const [flashColor, setFlashColor] = useState("white");
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -33,45 +35,66 @@ export default function Scan({ navigation }) {
   }, []);
 
   if (hasCameraPermission === undefined) {
-    return <Text>Requesting</Text>;
+    return (
+      <View className="w-full h-full flex items-center justify-center">
+        <ActivityIndicator size="large" color="#00ff00" />
+      </View>
+    );
   } else if (!hasCameraPermission) {
     return <Text>denide</Text>;
   }
 
   const takePic = async () => {
-    if (!photo) {
-      if (cameraRef) {
-        try {
-          const data = await cameraRef.current.takePictureAsync();
-          setPhoto(data.uri);
-        } catch (e) {
-          console.log(e);
+    if(!loading){
+      if (!photo) {
+        if (cameraRef) {
+          try {
+            const data = await cameraRef.current.takePictureAsync();
+            setPhoto(data.uri);
+          } catch (e) {
+            console.log(e);
+          }
         }
-      }
-    } else {
-      var data = new FormData();
-      data.append("file", {
-        uri: photo,
-        name: "userProfile.jpg",
-        type: "image/jpg",
-      });
-      axios
-        .post("http://192.168.247.45:4000/predict", data, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-          },
-          transformRequest: () => {
-            return data;
-          },
-        })
-        .then(function (response) {
-          console.log(response.data);
-          navigation.navigate("Details",{photo,res:response.data.result});
-        })
-        .catch(function (error) {
-          console.log(error);
+      } else {
+        setLoading(true);
+        var data = new FormData();
+        data.append("file", {
+          uri: photo,
+          name: "userProfile.jpg",
+          type: "image/jpg",
         });
+        axios
+          .post("https://192.168.247.45:4000/predict", data, {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "multipart/form-data",
+            },
+            transformRequest: () => {
+              return data;
+            },
+          })
+          .then(function (response) {
+            setLoading(false);
+            console.log(response.data);
+            if (
+              response.data.result ==
+              "Tomato___Spider_mites Two-spotted_spider_mite"
+            ) {
+              navigation.navigate("Details", {
+                photo,
+                res: "Tomato___Two_spotted_spider_mite",
+              });
+            } else {
+              navigation.navigate("Details", {
+                photo,
+                res: response.data.result,
+              });
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     }
   };
 
@@ -91,21 +114,23 @@ export default function Scan({ navigation }) {
 
   return (
     <View className="flex flex-col gap-10 ">
-      {photo ? (
-        <Image
-          source={{ uri: photo }}
-          style={{ width, height: (width / 3) * 4 }}
-          resizeMethod="scale"
-        />
-      ) : (
-        isFocused && (
-          <Camera
+      <View style={{ width, height: (width / 3) * 4 }} className="bg-black">
+        {photo ? (
+          <Image
+            source={{ uri: photo }}
             style={{ width, height: (width / 3) * 4 }}
-            ref={cameraRef}
-            flashMode={flash}
+            resizeMethod="scale"
           />
-        )
-      )}
+        ) : (
+          isFocused && (
+            <Camera
+              style={{ width, height: (width / 3) * 4 }}
+              ref={cameraRef}
+              flashMode={flash}
+            />
+          )
+        )}
+      </View>
       <View className="flex flex-row items-center justify-evenly relative">
         <TouchableOpacity
           onPress={pickImage}
@@ -119,11 +144,15 @@ export default function Scan({ navigation }) {
           onPress={takePic}
           className="w-20 h-20 bg-gray-300 rounded-full bor flex justify-center items-center text-gray-600"
         >
-          <MaterialIcons
-            name={photo ? "check" : "camera"}
-            size={50}
-            color="white"
-          />
+          {loading ? (
+            <ActivityIndicator size="large" color="#FFFFFF" />
+          ) : (
+            <MaterialIcons
+              name={photo ? "check" : "camera"}
+              size={50}
+              color="white"
+            />
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -141,7 +170,7 @@ export default function Scan({ navigation }) {
         {photo && (
           <View className="absolute top-[-30px] w-full items-center">
             <TouchableOpacity
-              onPress={() => setPhoto(null)}
+              onPress={() => {setPhoto(null);setLoading(false)}}
               className="w-8 h-8 bg-gray-300 rounded-full bor flex justify-center items-center text-gray-600 "
             >
               <MaterialIcons name="close" size={30} color="white" />

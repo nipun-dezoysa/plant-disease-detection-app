@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../Screens/Home"; 
-import Profile from "../Screens/Profile";
+import ProfileNavigation from "./ProfileNavigation";
 import ScanNavigation from "./ScanNavigation";
 import { AntDesign } from "@expo/vector-icons";
 import { View } from "react-native";
@@ -44,12 +44,13 @@ export default function TabNavigation() {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="Profiles"
+        component={ProfileNavigation}
         options={{
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="user" size={size} color={color} />
           ),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "plant disease detection app",
-    "slug": "plant-disease-detection-app",
+    "name": "Green Scan",
+    "slug": "Green Scan",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,27 +26,47 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
       ],
-       [
-         "expo-location",
-         {
-           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
-         }
-       ]
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
     ],
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos.",
+        "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ],
+      "package": "com.nipun_dezoysa.plantdiseasedetectionapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1ab80f1b-62c0-4e00-bf06-905e23e2aa85"
+      }
     }
   }
 }
