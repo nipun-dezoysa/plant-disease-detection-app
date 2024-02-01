@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import axios from "axios";
-import { View, Text, ActivityIndicator,TouchableOpacity} from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 export default function Home({ navigation }) {
+ 
   return (
     <View className="w-full h-full p-5">
       <Text className="text-2xl font-semibold">Welcome, Admin</Text>

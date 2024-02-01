@@ -14,7 +14,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function Scan({ navigation }) {
   const { width, height } = useWindowDimensions();
   const isFocused = useIsFocused();
@@ -25,6 +25,15 @@ export default function Scan({ navigation }) {
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const [flashColor, setFlashColor] = useState("white");
   const [loading, setLoading] = useState(false);
+  const [server, setServer] = useState("");
+  async function checkserver() {
+    const token = await AsyncStorage.getItem("server");
+    if (!token) {
+      setServer("no");
+    } else {
+      setServer(token);
+    }
+  }
   useEffect(() => {
     (async () => {
       const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -32,6 +41,7 @@ export default function Scan({ navigation }) {
       setCameraPermission(cameraPermission.status === "granted");
       setMediaPermission(mediaPermission.status === "granted");
     })();
+    checkserver();
   }, []);
 
   if (hasCameraPermission === undefined) {
@@ -45,7 +55,7 @@ export default function Scan({ navigation }) {
   }
 
   const takePic = async () => {
-    if(!loading){
+    if (!loading) {
       if (!photo) {
         if (cameraRef) {
           try {
@@ -64,7 +74,7 @@ export default function Scan({ navigation }) {
           type: "image/jpg",
         });
         axios
-          .post("https://192.168.247.45:4000/predict", data, {
+          .post(server + "predict", data, {
             headers: {
               Accept: "application/json",
               "Content-Type": "multipart/form-data",
@@ -170,7 +180,10 @@ export default function Scan({ navigation }) {
         {photo && (
           <View className="absolute top-[-30px] w-full items-center">
             <TouchableOpacity
-              onPress={() => {setPhoto(null);setLoading(false)}}
+              onPress={() => {
+                setPhoto(null);
+                setLoading(false);
+              }}
               className="w-8 h-8 bg-gray-300 rounded-full bor flex justify-center items-center text-gray-600 "
             >
               <MaterialIcons name="close" size={30} color="white" />

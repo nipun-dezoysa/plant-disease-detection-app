@@ -20,7 +20,10 @@ export default function Profile({ navigation }) {
         </TouchableOpacity>
       </View>
       <View className="mt-10 border-t w-full border-gray-200 flex pt-5">
-        <TouchableOpacity className="flex flex-row p-3 bg-white rounded-lg justify-between ">
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Settings")}
+          className="flex flex-row p-3 bg-white rounded-lg justify-between "
+        >
           <View className="flex flex-row gap-5">
             <AntDesign name="setting" size={30} color="black" />
             <Text className="text-lg">Settings</Text>
@@ -41,7 +44,10 @@ export default function Profile({ navigation }) {
           </View>
           <AntDesign name="right" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={()=>navigation.navigate("About")} className="flex flex-row p-3 bg-white rounded-lg mt-2 justify-between">
+        <TouchableOpacity
+          onPress={() => navigation.navigate("About")}
+          className="flex flex-row p-3 bg-white rounded-lg mt-2 justify-between"
+        >
           <View className="flex flex-row gap-5">
             <AntDesign name="infocirlceo" size={30} color="black" />
             <Text className="text-lg">About us</Text>
