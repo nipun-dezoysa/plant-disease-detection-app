@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Green Scan",
-    "slug": "Green Scan",
+    "slug": "plant-disease-detection-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
