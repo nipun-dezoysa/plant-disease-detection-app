@@ -1,6 +1,6 @@
 # Plant Disease Detection App
 ## Overview
-This React Native app detects plant diseases using image processing and provides detailed information on the disease, along with prevention techniques and nearby shops where users can buy seeds. The backend, built with Django, processes the images and returns the results to the app. Tailwind CSS and Express are used for the frontend and backend frameworks respectively.
+This React Native app detects plant diseases using image processing and provides detailed information on the disease, along with prevention techniques and nearby shops where users can buy seeds. The backend, built with Django, processes the images and returns the results to the app. Tailwind CSS and Expo-go are used for the frontend.
 
 ## Features
 + Disease Detection: Scan plant images to detect diseases.
@@ -9,5 +9,5 @@ This React Native app detects plant diseases using image processing and provides
 + Nearby Shops: Locate nearby shops to buy seeds and other agricultural products.
 
 ## Tech Stack
-+ Frontend: React Native, Tailwind CSS
-+ Backend: Django, Express
++ Frontend: React Native, Tailwind CSS, Express-go
++ Backend: Django
